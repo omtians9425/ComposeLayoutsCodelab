@@ -38,7 +38,7 @@ fun Greeting(name: String) {
 }
 
 @Composable
-fun PhotographerCard() {
+fun PhotographerCard(modifier: Modifier = Modifier) {
     Row {
         Surface(
             modifier = Modifier.size(50.dp),
