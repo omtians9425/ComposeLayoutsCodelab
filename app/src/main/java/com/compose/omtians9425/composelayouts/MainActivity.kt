@@ -35,9 +35,18 @@ class MainActivity : AppCompatActivity() {
 
 @Composable
 fun LayoutsCodelab() {
-    Text(text = "Hi there!")
+    Scaffold { innerPadding ->
+        BodyContent(Modifier.padding(innerPadding))
+    }
 }
 
+@Composable
+fun BodyContent(modifier: Modifier = Modifier) {
+    Column(modifier = modifier) {
+        Text(text = "Hi there!")
+        Text(text = "Thanks for going through the Layouts codelab")
+    }
+}
 
 @Composable
 fun PhotographerCard(modifier: Modifier = Modifier) {
@@ -53,9 +62,7 @@ fun PhotographerCard(modifier: Modifier = Modifier) {
             modifier = Modifier.size(50.dp),
             shape = CircleShape,
             color = MaterialTheme.colors.onSurface.copy(alpha = 0.2f)
-        ) {
-
-        }
+        ) {}
         Column(
             modifier = Modifier
                 .padding(start = 8.dp)
@@ -77,6 +84,7 @@ fun PhotographerCardPreview() {
     }
 }
 
+@Preview
 @Composable
 fun LayoutsCodelabPreview() {
     ComposeLayoutsTheme {
