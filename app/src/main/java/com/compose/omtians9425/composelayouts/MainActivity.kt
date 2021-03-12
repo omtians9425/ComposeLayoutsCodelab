@@ -27,19 +27,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeLayoutsTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
-                    Greeting("Android")
-                }
+                LayoutsCodelab()
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+fun LayoutsCodelab() {
+    Text(text = "Hi there!")
 }
+
 
 @Composable
 fun PhotographerCard(modifier: Modifier = Modifier) {
@@ -79,10 +77,9 @@ fun PhotographerCardPreview() {
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+fun LayoutsCodelabPreview() {
     ComposeLayoutsTheme {
-        Greeting("Android")
+        LayoutsCodelab()
     }
 }
