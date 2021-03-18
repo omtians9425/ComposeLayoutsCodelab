@@ -66,12 +66,12 @@ fun LayoutsCodelab() {
 
 @Composable
 fun BodyContent(modifier: Modifier = Modifier) {
-   MyOwnColumn(modifier.padding(8.dp)) {
-       Text("MyOwnColumn")
-       Text("places items")
-       Text("vertically")
-       Text("We've done it by hand!")
-   }
+    MyOwnColumn(modifier.padding(8.dp)) {
+        Text("MyOwnColumn")
+        Text("places items")
+        Text("vertically")
+        Text("We've done it by hand!")
+    }
 }
 
 @Composable
@@ -139,6 +139,58 @@ fun MyOwnColumn(
             placeables.forEach { placeable ->
                 placeable.placeRelative(x = 0, y = yPosition)
                 yPosition += placeable.height
+            }
+        }
+    }
+}
+
+@Composable
+fun StaggeredGrid(
+    modifier: Modifier = Modifier,
+    rows: Int = 3,
+    content: @Composable() () -> Unit
+) {
+    Layout(
+        modifier = modifier,
+        content = content,
+    ) { measurables, constraints ->
+        // Keep track of the width of each row
+        val rowWidths = IntArray(rows) { 0 }
+
+        // Keep track of the max height of each row
+        val rowMaxHeights = IntArray(rows) { 0 }
+
+        val placeables = measurables.mapIndexed { index, measurable ->
+            val placeable = measurable.measure(constraints)
+
+            // Track the width and max height of each row
+            val row = index % rows // Row number of each grid
+            rowWidths[row] = rowWidths[row] + placeable.width
+            rowMaxHeights[row] = maxOf(rowMaxHeights[row], placeable.height)
+
+            placeable
+        }
+
+        // Calculate overall grid width and height
+        val width = rowWidths.maxOrNull()?.coerceIn(constraints.minWidth..constraints.maxWidth)
+            ?: constraints.minWidth
+
+        val height = rowMaxHeights.sumBy { it }
+            .coerceIn(constraints.minHeight..constraints.maxHeight)
+
+        val rowY = IntArray(rows) { 0 }
+        for (i in 1 until rows) {
+            rowY[i] = rowY[i - 1] + rowMaxHeights[i - 1]
+        }
+
+        layout(width, height) {
+            val rowX = IntArray(rows) {0 }
+
+            placeables.forEachIndexed {index, placeable ->
+                val row = index % rows
+                placeable.placeRelative(x = rowX[row], y = rowY[row])
+
+                rowX[row] += placeable.width
             }
         }
     }
